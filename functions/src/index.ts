@@ -35,11 +35,11 @@ exports.dropbox = functions.https.onRequest(app);
 exports.truncate = functions.database.ref('/notifications/{uid}/{notification}').onWrite((change) => {
     const parent = change.after.ref.parent;
     return parent.once('value').then((snapshot) => {
-        if (snapshot.numChildren() >= 3) {
+        if (snapshot.numChildren() >= 1) {
             let childCount = 0;
             const updates = {};
             snapshot.forEach((child) => {
-                if (++childCount <= snapshot.numChildren() - 3) {
+                if (++childCount <= snapshot.numChildren() - 1) {
                     updates[child.key] = null;
                 }
             });
